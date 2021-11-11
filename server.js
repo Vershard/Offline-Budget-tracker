@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
@@ -19,7 +20,13 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/budget", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
+mongoose.connection.on('connected', () =>
+  console.log('Connected to MongoDB Endpoint')
+);
 
+mongoose.connection.on('error', (err) =>
+  console.log(`Mongoose default connection error: ${err}`)
+);
 // routes
 app.use(require("./routes/api.js"));
 
